@@ -51,7 +51,7 @@ export default function Join() {
 
           <div className="flex flex-col">
             <hr className="mb-5 opacity-20" />
-            <Button href="profile" type="outlined" onClick={() => console.log("a")}>Login</Button>
+            <Button href="profile" className="w-full" type="outlined" onClick={() => console.log("a")}>Login</Button>
           </div>
         </div>
       </Modal>
