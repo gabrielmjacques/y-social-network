@@ -5,7 +5,7 @@ import Button from "../components/Button";
 import Input from "../components/Input";
 import Modal from "../components/Modal";
 
-export default function Home() {
+export default function Join() {
   const [signupModalShow, setSignupModalShow] = useState(false);
   const [loginModalShow, setLoginModalShow] = useState(false);
 
@@ -16,7 +16,7 @@ export default function Home() {
       <Modal title="Sign Up" isOpen={signupModalShow} onClose={() => setSignupModalShow(false)}>
         <div className="flex flex-col justify-between h-full">
           <div className="flex flex-col gap-3">
-            <Input size="md" placeholder="Fullname" />
+            <Input size="md" placeholder="Name" />
             <Input size="md" placeholder="Login" />
             <Input size="md" placeholder="Password" />
             <Input size="md" placeholder="Confirm password" />
