@@ -1,3 +1,6 @@
+'use client';
+
+import Link from "next/link";
 import { CSSProperties } from "react";
 
 interface ButtonProps {
@@ -12,7 +15,6 @@ interface ButtonProps {
 }
 
 export default function Button(props: ButtonProps) {
-
     let sizeClass: String = '';
 
     switch (props.size) {
@@ -55,20 +57,32 @@ export default function Button(props: ButtonProps) {
         `;
     }
 
+    const handleClick = () => {
+        if (props.onClick)
+            props.onClick();
+    };
+
+    function ButtonRoot() {
+        return (
+            <button
+                disabled={props.disabled ? props.disabled : false}
+                style={props.sx}
+                onClick={handleClick}
+                className={`${btnClass} ${props.className}`}
+            >
+                {props.children}
+            </button >);
+    };
 
     if (props.href) {
         return (
-            <>
-                <a href={props.href}>
-                    <button disabled={props.disabled ? props.disabled : false} style={props.sx} onClick={props.onClick ? () => props.onClick!() : () => { return; }} className={`${btnClass} ${props.className}`}>{props.children}</button >
-                </a>
-            </>
+            <Link href={props.href}>
+                <ButtonRoot />
+            </Link>
         );
     }
     // Primary button
     return (
-        <>
-            <button disabled={props.disabled ? props.disabled : false} style={props.sx} onClick={props.onClick ? () => props.onClick!() : () => { return; }} className={`${btnClass} ${props.className}`}>{props.children}</button >
-        </>
+        <ButtonRoot />
     );
 }

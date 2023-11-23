@@ -11,15 +11,15 @@ interface PostProps {
 export default function Post(props: PostProps) {
     return (
         <div className="flex gap-5 px-4 py-3 border-b border-white border-opacity-30 cursor-pointer hover:backdrop-brightness-125">
-            <img className="w-12 self-start rounded-full" src="https://placehold.co/300x300" alt="" />
+            <img className="w-12 self-start rounded-full" src={props.img} alt="" />
 
-            <div className="w-full flex flex-col gap-2">
+            <div className="w-full flex flex-col text-sm">
                 <div className="flex justify-between">
                     <div className="flex gap-2 items-center">
-                        <h1 className="font-semibold">{props.username}</h1>
-                        <small className="opacity-50">@{props.login}</small>
-                        <small className="opacity-50">·</small>
-                        <small className="opacity-50">{props.date.toLocaleDateString()}</small>
+                        <span className="font-bold">{props.username}</span>
+                        <span className="opacity-50">@{props.login}</span>
+                        <span className="opacity-50">·</span>
+                        <span className="opacity-50">{props.date.toLocaleDateString()}</span>
                     </div>
 
                     <Button type="text" size="sm" sx={{ padding: 10 }}>

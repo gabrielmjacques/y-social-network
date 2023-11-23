@@ -2,14 +2,16 @@
 
 import Button from "@/app/components/Button";
 import Post from "@/app/components/Post";
+import { useEffect, useState } from "react";
 
 export default function Profile() {
+  const [profileImg, setProfileImg] = useState("https://i.pravatar.cc/300");
 
   return (
     <main>
       {/* Back menu */}
       <section className="fixed bg-gray-950 w-full flex items-center gap-5 px-5">
-        <Button type="text" size="sm" sx={{ padding: 10 }}>
+        <Button onClick={() => window.history.back()} type="text" size="sm" sx={{ padding: 10 }}>
           <img src="icons/left-arr.svg" className="w-4" alt="" />
         </Button>
 
@@ -23,12 +25,12 @@ export default function Profile() {
       <section>
         {/* Banner */}
         <div className="bg-red-800 w-full h-64 overflow-hidden">
-          <img className="object-cover w-full h-full" src="https://placehold.co/800x300" alt="" />
+          <img className="object-cover w-full h-full" src="https://loremflickr.com/800/300" alt="" />
         </div>
 
         {/* Avatar */}
         <div className="relative -mt-20 ms-5 w-36 h-36 border-4 border-black rounded-full overflow-hidden">
-          <img className="object-cover w-full h-full" src="https://placehold.co/300x300" alt="" />
+          <img className="object-cover w-full h-full" src={profileImg} alt="" />
         </div>
       </section>
 
@@ -88,7 +90,7 @@ export default function Profile() {
       {/* Posts */}
       <section>
         <Post
-          img="https://placehold.co/300x300"
+          img={profileImg}
           username="User Name"
           login="userlogin"
           date={new Date()}
