@@ -63,18 +63,24 @@ export default function Profile() {
       </section>
 
       {/* Profile sections */}
-      <section className="flex border-b border-white border-opacity-30">
-        <div className="">
-          <Button className="w-full relative" type="text" sx={{ borderRadius: 0 }}>
-            Posts
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-1 rounded-full bg-cyan-500"></div>
+      <section className="h-12 flex border-b border-white border-opacity-30">
+        <div className="w-full">
+          <Button className="w-full h-full" type="text" sx={{ borderRadius: 0, padding: 0 }}>
+            <div className="h-full flex flex-col items-center justify-between">
+              <div className=""></div>
+              Posts
+              <div className="w-full h-1 rounded-full bg-cyan-500"></div>
+            </div>
           </Button>
         </div>
 
-        <div className="">
-          <Button className="w-full relative" type="text" sx={{ borderRadius: 0 }}>
-            Posts
-            <div className="hidden absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-1 rounded-full bg-cyan-500"></div>
+        <div className="w-full">
+          <Button className="w-full h-full" type="text" sx={{ borderRadius: 0, padding: 0 }}>
+            <div className="h-full flex flex-col items-center justify-between">
+              <div className=""></div>
+              Likes
+              <div className="opacity-0 w-full h-1 rounded-full bg-cyan-500"></div>
+            </div>
           </Button>
         </div>
       </section>

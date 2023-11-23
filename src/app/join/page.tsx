@@ -13,35 +13,45 @@ export default function Join() {
     <main className="bg-gray-950 h-screen flex flex-col justify-between">
 
       {/* Sign up modal */}
-      <Modal title="Sign Up" isOpen={signupModalShow} onClose={() => setSignupModalShow(false)}>
+      <Modal isOpen={signupModalShow} onClose={() => setSignupModalShow(false)}>
         <div className="flex flex-col justify-between h-full">
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 text-2xl text-center font-bold">
+            <h1>Create your account</h1>
+            <hr className="border border-white border-opacity-20" />
+          </div>
+
+          <div className="flex flex-col gap-3 py-5">
             <Input size="md" placeholder="Name" />
             <Input size="md" placeholder="Login" />
-            <Input size="md" placeholder="Password" />
-            <Input size="md" placeholder="Confirm password" />
+            <Input type="password" size="md" placeholder="Password" />
+            <Input type="password" size="md" placeholder="Confirm password" />
           </div>
 
 
           <div className="flex flex-col">
-            <hr className="my-5 opacity-20" />
+            <hr className="mb-5 opacity-20" />
             <Button type="outlined" onClick={() => console.log("a")}>Create account</Button>
           </div>
         </div>
       </Modal>
 
       {/* Login modal */}
-      <Modal title="Login" isOpen={loginModalShow} onClose={() => setLoginModalShow(false)}>
+      <Modal isOpen={loginModalShow} onClose={() => setLoginModalShow(false)}>
         <div className="flex flex-col justify-between h-full">
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 text-2xl text-center font-bold">
+            <h1>Welcome back!</h1>
+            <hr className="border border-white border-opacity-20" />
+          </div>
+
+          <div className="flex flex-col gap-3 py-5">
             <Input size="md" placeholder="Login" />
-            <Input size="md" placeholder="Password" />
+            <Input type="password" size="md" placeholder="Password" />
           </div>
 
 
           <div className="flex flex-col">
-            <hr className="my-5 opacity-20" />
-            <Button type="outlined" onClick={() => console.log("a")}>Login</Button>
+            <hr className="mb-5 opacity-20" />
+            <Button href="profile" type="outlined" onClick={() => console.log("a")}>Login</Button>
           </div>
         </div>
       </Modal>

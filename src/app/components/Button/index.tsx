@@ -8,6 +8,7 @@ interface ButtonProps {
     className?: string;
     onClick?: () => void;
     href?: string;
+    disabled?: boolean;
 }
 
 export default function Button(props: ButtonProps) {
@@ -35,17 +36,23 @@ export default function Button(props: ButtonProps) {
     if (props.type == "primary" || !props.type) {
         btnClass = `flex items-center justify-center gap-2 bg-cyan-600 rounded-full font-bold ${sizeClass}
         hover:bg-cyan-700 transition-all
-        active:bg-cyan-800`;
+        active:bg-cyan-800
+        disabled:bg-cyan-600 disabled:opacity-50
+        `;
 
     } else if (props.type == "outlined") {
         btnClass = `flex items-center justify-center gap-2 text-cyan-300 border border-white border-opacity-30 rounded-full font-bold ${sizeClass}
         hover:bg-cyan-700 hover:bg-opacity-20 transition-all
-        active:bg-cyan-800 active:bg-opacity-20`;
+        active:bg-cyan-800 active:bg-opacity-20
+        disable:opacity-50
+        `;
 
     } else if (props.type == "text") {
         btnClass = `flex items-center justify-center gap-2 text-white rounded-full font-bold ${sizeClass}
         hover:bg-white hover:bg-opacity-5 transition-all
-        active:bg-white active:bg-opacity-10`;
+        active:bg-white active:bg-opacity-10
+        disable:opacity-50
+        `;
     }
 
 
@@ -53,7 +60,7 @@ export default function Button(props: ButtonProps) {
         return (
             <>
                 <a href={props.href}>
-                    <button style={props.sx} onClick={props.onClick ? () => props.onClick!() : () => { return; }} className={`${btnClass} ${props.className}`}>{props.children}</button >
+                    <button disabled={props.disabled ? props.disabled : false} style={props.sx} onClick={props.onClick ? () => props.onClick!() : () => { return; }} className={`${btnClass} ${props.className}`}>{props.children}</button >
                 </a>
             </>
         );
@@ -61,7 +68,7 @@ export default function Button(props: ButtonProps) {
     // Primary button
     return (
         <>
-            <button style={props.sx} onClick={props.onClick ? () => props.onClick!() : () => { return; }} className={`${btnClass} ${props.className}`}>{props.children}</button >
+            <button disabled={props.disabled ? props.disabled : false} style={props.sx} onClick={props.onClick ? () => props.onClick!() : () => { return; }} className={`${btnClass} ${props.className}`}>{props.children}</button >
         </>
     );
 }
