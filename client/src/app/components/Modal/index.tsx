@@ -41,19 +41,13 @@ export default function Modal(props: ModalProps) {
         setTimeout(() => {
             setIsOpen(false);
             props.onClose();
-        }, 500);
+        }, 300);
     }
 
     useEffect(() => {
         if (props.isOpen) {
             document.body.addEventListener("keydown", (e) => {
                 if (e.key === "Escape") {
-                    handleOnClose();
-                }
-            });
-
-            document.body.addEventListener("click", (e) => {
-                if (e.target === document.querySelector(".backdrop-brightness-50")) {
                     handleOnClose();
                 }
             });
@@ -66,7 +60,9 @@ export default function Modal(props: ModalProps) {
     }, [props.isOpen]);
 
     return (
-        <div className={`fixed inset-0 z-30 backdrop-brightness-50 backdrop-blur-sm transition duration-500 ${isOpen ? "block" : "hidden"}`} style={{ opacity: modalStyles.opacity }}>
+        <div className={`fixed inset-0 z-50 backdrop-brightness-50 backdrop-blur-sm transition duration-500 ${isOpen ? "block" : "hidden"}`} style={{ opacity: modalStyles.opacity }}>
+
+            <div className="fixed inset-0 z-40" onClick={() => props.onClose()}></div>
 
             <div className="fixed top-1/2 left-1/2 bg-gray-950 border border-white border-opacity-10 text-white z-50 w-10/12 md:w-5/12 rounded-xl shadow-2xl flex flex-col transition duration-300" style={{ transform: `translate(-50%, ${modalStyles.translateY}%` }}>
                 <div className="p-2 flex justify-between">

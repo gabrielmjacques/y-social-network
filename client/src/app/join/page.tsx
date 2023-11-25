@@ -27,10 +27,9 @@ export default function Join() {
             <Input type="password" size="md" placeholder="Confirm password" />
           </div>
 
-
           <div className="flex flex-col">
             <hr className="mb-5 opacity-20" />
-            <Button type="outlined" onClick={() => console.log("a")}>Create account</Button>
+            <Button type="outlined">Create account</Button>
           </div>
         </div>
       </Modal>
@@ -48,10 +47,9 @@ export default function Join() {
             <Input type="password" size="md" placeholder="Password" />
           </div>
 
-
           <div className="flex flex-col">
             <hr className="mb-5 opacity-20" />
-            <Button href="profile" className="w-full" type="outlined" onClick={() => console.log("a")}>Login</Button>
+            <Button href="profile" className="w-full" type="outlined">Login</Button>
           </div>
         </div>
       </Modal>
