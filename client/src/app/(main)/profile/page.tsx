@@ -24,20 +24,20 @@ export default function Profile() {
       {/* Profile images */}
       <section>
         {/* Banner */}
-        <div className="bg-red-800 w-full h-64 overflow-hidden">
+        <div className="bg-red-800 w-full h-44 md:h-64 overflow-hidden">
           <img className="object-cover w-full h-full" src="https://loremflickr.com/800/300" alt="" />
         </div>
 
         {/* Avatar */}
-        <div className="relative -mt-20 ms-5 w-36 h-36 border-4 border-black rounded-full overflow-hidden">
+        <div className="relative -mt-12 md:-mt-20 ms-5 w-24 md:w-36 h-24 md:h-36 border-4 border-black rounded-full overflow-hidden">
           <img className="object-cover w-full h-full" src={profileImg} alt="" />
         </div>
       </section>
 
       {/* Profile Data */}
-      <section className="p-5 flex flex-col gap-2">
+      <section className="px-5 py-3 flex flex-col gap-2">
         <div>
-          <h1 className="text-2xl font-bold">User Name</h1>
+          <h1 className="text-lg md:text-2xl font-bold">User Name</h1>
           <small className="text-base opacity-50">@userlogin</small>
         </div>
 

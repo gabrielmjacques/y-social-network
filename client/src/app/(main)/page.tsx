@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Button from "../components/Button";
 import MobileMenu from "../components/MobileMenu";
-import NewPost from "../components/NewPost";
+import PostCreator from "../components/PostCreator";
 import Post from "../components/Post";
 
 export default function Home() {
@@ -38,7 +38,7 @@ export default function Home() {
 
             {/* New post */}
             <section>
-                <NewPost />
+                <PostCreator />
             </section>
 
             {/* Posts */}

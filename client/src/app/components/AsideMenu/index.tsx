@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Button from "../Button";
 import Modal from "../Modal";
-import NewPost from "../NewPost";
+import NewPost from "../PostCreator";
 
 export default function AsideMenu() {
     const [isModalOpen, setIsModalOpen] = useState(false);

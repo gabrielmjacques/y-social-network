@@ -3,11 +3,11 @@
 import { useRef, useState } from "react";
 import Button from "../Button";
 
-interface NewPostProps {
+interface PostCreatorProps {
     rows?: number;
 }
 
-export default function NewPost(props: NewPostProps) {
+export default function PostCreator(props: PostCreatorProps) {
     const [isPostButtonDisabled, setIsPostButtonDisabled] = useState(true);
     const textArea = useRef<HTMLTextAreaElement>(null);
 
