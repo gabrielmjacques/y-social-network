@@ -1,10 +1,22 @@
+import { Input as AntInput, Form } from "antd";
+import { Rule } from "antd/es/form";
+import { useEffect, useState } from "react";
+import Button from "../Button";
+import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
+
 interface InputProps {
     placeholder: string;
+    name?: string;
     type?: string;
     size?: "sm" | "md" | "lg";
+    rules?: Rule[];
+
 }
 
 export default function Input(props: InputProps) {
+    const [inputType, setInputType] = useState<string>("text");
+    const [eyeVisible, setEyeVisible] = useState(false);
+
     let sizeClass: String = '';
 
     switch (props.size) {
@@ -23,12 +35,34 @@ export default function Input(props: InputProps) {
             break;
     }
 
+    useEffect(() => {
+        if (props.type) setInputType(props.type);
+        if (props.type == "password") setEyeVisible(true);
+    }, []);
+
+    const togglePasswordVisible = () => {
+        if (inputType == "text") setInputType("password");
+        else setInputType("text");
+    };
+
     return (
-        <>
-            <input
-                className={`rounded-full bg-white bg-opacity-5 ${sizeClass}`}
-                type={props.type || "text"}
-                placeholder={props.placeholder} />
-        </>
+        <Form.Item
+            name={props.name}
+            rules={props.rules}
+            className="relative m-0 "
+        >
+            <AntInput
+                type={inputType}
+                placeholder={props.placeholder}
+                className={
+                    `w-full rounded-full bg-white text-white placeholder-white placeholder-opacity-40 bg-opacity-5 border border-white border-opacity-10 
+                    hover:border-white hover:border-opacity-20
+                    focus:border-cyan-500 focus:border-opacity-30
+                ${sizeClass}`
+                }
+            >
+
+            </AntInput>
+        </Form.Item>
     );
 }

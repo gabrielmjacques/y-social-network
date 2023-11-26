@@ -19,17 +19,17 @@ export default function Button(props: ButtonProps) {
 
     switch (props.size) {
         case "sm":
-            sizeClass = 'px-5 py-2 text-sm';
+            sizeClass = 'p-2 text-sm';
             break;
         case "md":
-            sizeClass = 'px-7 py-3 text-base';
+            sizeClass = 'p-3 text-base';
             break;
         case "lg":
-            sizeClass = 'px-8 py-4 text-xl';
+            sizeClass = 'p-4 text-xl';
             break;
 
         default:
-            sizeClass = 'px-7 py-3 text-base';
+            sizeClass = 'p-3 text-base';
             break;
     }
 

@@ -24,11 +24,7 @@ export default function Profile() {
       {/* Profile images */}
       <section>
         {/* Banner */}
-<<<<<<< HEAD
         <div className="w-full h-64 overflow-hidden">
-=======
-        <div className="bg-red-800 w-full h-44 md:h-64 overflow-hidden">
->>>>>>> a475dd9b5f5a2301aff372e751e7672cf4b66109
           <img className="object-cover w-full h-full" src="https://loremflickr.com/800/300" alt="" />
         </div>
 

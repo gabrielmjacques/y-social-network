@@ -1,37 +1,115 @@
 'use client';
 
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import Modal from "../components/Modal";
+import { Form, notification } from "antd";
+
+interface SignupForm {
+  name: string;
+  login: string;
+  password: string;
+  confirm_password: string;
+}
 
 export default function Join() {
   const [signupModalShow, setSignupModalShow] = useState(false);
   const [loginModalShow, setLoginModalShow] = useState(false);
 
+  const [showNotification, contextHolder] = notification.useNotification();
+
+  const onFinish = async (e: SignupForm) => {
+    const response = await fetch("http://localhost:3001/api/user/create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(e)
+    });
+    const data = await response.json();
+    console.log(data);
+
+    if (data.success) {
+      setSignupModalShow(false);
+      showNotification.success({
+        message: "Success!",
+        description: "Your account has been created successfully! You can now login"
+      });
+
+    } else {
+      showNotification.error({
+        message: "Error!",
+        description: data.message
+      });
+    }
+  };
+
   return (
     <main className="bg-gray-950 h-screen flex flex-col justify-between">
+      {contextHolder}
 
       {/* Sign up modal */}
       <Modal isOpen={signupModalShow} onClose={() => setSignupModalShow(false)}>
-        <div className="flex flex-col justify-between h-full">
-          <div className="flex flex-col gap-3 text-2xl text-center font-bold">
-            <h1>Create your account</h1>
-            <hr className="border border-white border-opacity-20" />
+        <Form
+          onFinish={onFinish}
+          autoComplete="off"
+          className="flex flex-col justify-between h-full">
+
+          <div className="flex flex-col justify-between h-full">
+            <div className="text-white flex flex-col gap-3 text-2xl text-center font-bold">
+              <h1>Join our community!</h1>
+              <hr className="border border-white border-opacity-20" />
+            </div>
+
+            <div className="flex flex-col gap-3 py-5">
+              <Input name="name" size="md" placeholder="Name"
+                rules={[
+                  { required: true, message: "Please enter your name" },
+                  { min: 7, max: 60, message: "Login must be between 7 and 15 characters" },
+                  { pattern: /^(?!.*\s$)(?!^\s)[A-Za-zÀ-ÿ\s]{7,60}$/, message: "Name must contain only letters" }
+                ]}
+              />
+
+              <Input name="login" size="md" placeholder="Login"
+                rules={[
+                  { required: true, message: "Please enter your login" },
+                  { max: 15, message: "Login must be maximum 15 characters" },
+                ]}
+              />
+
+              <Input name="password" type="password" size="md" placeholder="Password"
+                rules={[
+                  { required: true, message: "Please enter your password" },
+                  { pattern: /\d+/, message: "Must contain at least one number" },
+                  { pattern: /[A-Z]+/, message: "Must contain at least one uppercase letter" },
+                  { pattern: /[a-z]+/, message: "Must contain at least one lowercase letter" },
+                  { pattern: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/, message: "Password must contain at least one special character" }
+                ]}
+              />
+
+              <Input name="confirm_password" type="password" size="md" placeholder="Confirm password"
+                rules={[
+                  { required: true, message: "Please confirm your password" },
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (getFieldValue("password") != value) {
+                        return Promise.reject("Passwords don't match");
+                      }
+                      return Promise.resolve();
+                    }
+                  })
+                ]}
+              />
+            </div>
+
+            <div className="flex flex-col">
+              <hr className="mb-5 opacity-20" />
+              <Form.Item>
+                <Button className="w-full" type="outlined">Sign up</Button>
+              </Form.Item>
+            </div>
           </div>
 
-          <div className="flex flex-col gap-3 py-5">
-            <Input size="md" placeholder="Name" />
-            <Input size="md" placeholder="Login" />
-            <Input type="password" size="md" placeholder="Password" />
-            <Input type="password" size="md" placeholder="Confirm password" />
-          </div>
-
-          <div className="flex flex-col">
-            <hr className="mb-5 opacity-20" />
-            <Button type="outlined">Create account</Button>
-          </div>
-        </div>
+        </Form>
       </Modal>
 
       {/* Login modal */}
