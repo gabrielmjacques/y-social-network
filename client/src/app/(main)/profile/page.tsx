@@ -2,7 +2,7 @@
 
 import Button from "@/app/components/Button";
 import Post from "@/app/components/Post";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Profile() {
   const [profileImg, setProfileImg] = useState("https://i.pravatar.cc/300");
@@ -16,7 +16,7 @@ export default function Profile() {
         </Button>
 
         <div className="py-1 flex flex-col">
-          <span className="text-lg font-bold">User Name</span>
+          <span className="text-lg font-bold">{"asd"}</span>
           <span className="text-sm opacity-50">0 posts</span>
         </div>
       </section>

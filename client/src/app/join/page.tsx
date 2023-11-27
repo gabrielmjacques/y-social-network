@@ -1,29 +1,45 @@
 'use client';
 
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import Modal from "../components/Modal";
 import { Form, notification } from "antd";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 interface SignupForm {
-  name: string;
+  r_name: string;
+  r_login: string;
+  r_password: string;
+  r_confirm_password: string;
+}
+
+interface LoginForm {
   login: string;
   password: string;
-  confirm_password: string;
 }
 
 export default function Join() {
   const [signupModalShow, setSignupModalShow] = useState(false);
   const [loginModalShow, setLoginModalShow] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [showNotification, contextHolder] = notification.useNotification();
 
-  const onFinish = async (e: SignupForm) => {
+  const router = useRouter();
+
+  const onSignupFinish = async (e: SignupForm) => {
+    setLoading(true);
+
     const response = await fetch("http://localhost:3001/api/user/create", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(e)
+      body: JSON.stringify({
+        name: e.r_name,
+        login: e.r_login,
+        password: e.r_password
+      })
     });
     const data = await response.json();
     console.log(data);
@@ -41,6 +57,32 @@ export default function Join() {
         description: data.message
       });
     }
+
+    setLoading(false);
+  };
+
+  const onLoginFinish = async (e: LoginForm) => {
+    setLoading(true);
+
+    const result = await signIn("credentials", {
+      login: e.login,
+      password: e.password,
+      redirect: false
+    });
+
+    console.log(result);
+
+    if (result?.error) {
+      showNotification.error({
+        message: "Error!",
+        description: "Login or password incorrect"
+      });
+
+      setLoading(false);
+      return;
+    }
+
+    router.replace("/");
   };
 
   return (
@@ -50,7 +92,7 @@ export default function Join() {
       {/* Sign up modal */}
       <Modal isOpen={signupModalShow} onClose={() => setSignupModalShow(false)}>
         <Form
-          onFinish={onFinish}
+          onFinish={onSignupFinish}
           autoComplete="off"
           className="flex flex-col justify-between h-full">
 
@@ -61,7 +103,7 @@ export default function Join() {
             </div>
 
             <div className="flex flex-col gap-3 py-5">
-              <Input name="name" size="md" placeholder="Name"
+              <Input name="r_name" size="md" placeholder="Name"
                 rules={[
                   { required: true, message: "Please enter your name" },
                   { min: 7, max: 60, message: "Login must be between 7 and 15 characters" },
@@ -69,14 +111,14 @@ export default function Join() {
                 ]}
               />
 
-              <Input name="login" size="md" placeholder="Login"
+              <Input name="r_login" size="md" placeholder="Login"
                 rules={[
                   { required: true, message: "Please enter your login" },
                   { max: 15, message: "Login must be maximum 15 characters" },
                 ]}
               />
 
-              <Input name="password" type="password" size="md" placeholder="Password"
+              <Input name="r_password" type="password" size="md" placeholder="Password"
                 rules={[
                   { required: true, message: "Please enter your password" },
                   { pattern: /\d+/, message: "Must contain at least one number" },
@@ -86,12 +128,12 @@ export default function Join() {
                 ]}
               />
 
-              <Input name="confirm_password" type="password" size="md" placeholder="Confirm password"
+              <Input name="r_confirm_password" type="password" size="md" placeholder="Confirm password"
                 rules={[
                   { required: true, message: "Please confirm your password" },
                   ({ getFieldValue }) => ({
                     validator(_, value) {
-                      if (getFieldValue("password") != value) {
+                      if (getFieldValue("r_password") != value) {
                         return Promise.reject("Passwords don't match");
                       }
                       return Promise.resolve();
@@ -104,7 +146,7 @@ export default function Join() {
             <div className="flex flex-col">
               <hr className="mb-5 opacity-20" />
               <Form.Item>
-                <Button className="w-full" type="outlined">Sign up</Button>
+                <Button loading={loading} className="w-full" type="outlined">Sign up</Button>
               </Form.Item>
             </div>
           </div>
@@ -114,22 +156,35 @@ export default function Join() {
 
       {/* Login modal */}
       <Modal isOpen={loginModalShow} onClose={() => setLoginModalShow(false)}>
-        <div className="flex flex-col justify-between h-full">
-          <div className="flex flex-col gap-3 text-2xl text-center font-bold">
+        <Form
+          onFinish={onLoginFinish}
+          className="flex flex-col justify-between h-full">
+          <div className="text-white flex flex-col gap-3 text-2xl text-center font-bold">
             <h1>Welcome back!</h1>
             <hr className="border border-white border-opacity-20" />
           </div>
 
           <div className="flex flex-col gap-3 py-5">
-            <Input size="md" placeholder="Login" />
-            <Input type="password" size="md" placeholder="Password" />
+            <Input name="login" size="md" placeholder="Login"
+              rules={[
+                { required: true, message: "Please enter your login" }
+              ]}
+            />
+            <Input name="password" type="password" size="md" placeholder="Password"
+              rules={[
+                { required: true, message: "Please enter your password" }
+              ]}
+            />
           </div>
 
           <div className="flex flex-col">
             <hr className="mb-5 opacity-20" />
-            <Button href="profile" className="w-full" type="outlined">Login</Button>
+
+            <Form.Item>
+              <Button loading={loading} className="w-full" type="outlined">Login</Button>
+            </Form.Item>
           </div>
-        </div>
+        </Form>
       </Modal>
 
       <div className="h-auto md:h-full flex flex-col md:flex-row justify-between items-center">
@@ -174,4 +229,4 @@ export default function Join() {
 
     </main >
   );
-}
+};

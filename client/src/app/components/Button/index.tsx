@@ -1,5 +1,7 @@
 'use client';
 
+import { LoadingOutlined } from "@ant-design/icons";
+import { Spin } from "antd";
 import Link from "next/link";
 import { CSSProperties } from "react";
 
@@ -12,10 +14,14 @@ interface ButtonProps {
     onClick?: () => void;
     href?: string;
     disabled?: boolean;
+    loading?: boolean;
+    htmlType?: "button" | "submit" | "reset";
+    align?: "start" | "center" | "end" | "between";
 }
 
 export default function Button(props: ButtonProps) {
     let sizeClass: String = '';
+    let alignClass: String = '';
 
     switch (props.size) {
         case "sm":
@@ -33,27 +39,47 @@ export default function Button(props: ButtonProps) {
             break;
     }
 
-    let btnClass: string = '';
+    switch (props.align) {
+        case "start":
+            alignClass = 'justify-start';
+            break;
+        case "center":
+            alignClass = 'justify-center';
+            break;
+        case "end":
+            alignClass = 'justify-end';
+            break;
+        case "between":
+            alignClass = 'justify-between';
+            break;
+
+        default:
+            alignClass = 'justify-center';
+            break;
+    }
+
+
+    const baseClass = `flex items-center gap-2 rounded-full font-semibold transition-all duration-300 ${sizeClass} ${alignClass}
+                        disabled:cursor-not-allowed disabled:bg-inherit disabled:text-white disabled:text-opacity-50
+    `;
+    let typeClass: string = '';
 
     if (props.type == "primary" || !props.type) {
-        btnClass = `flex items-center justify-center gap-2 bg-cyan-600 rounded-full font-bold ${sizeClass}
-        hover:bg-cyan-700 transition-all
+        typeClass = `${baseClass} bg-cyan-500
+        hover:bg-cyan-700
         active:bg-cyan-800
-        disabled:bg-cyan-600 disabled:opacity-50
         `;
 
     } else if (props.type == "outlined") {
-        btnClass = `flex items-center justify-center gap-2 text-cyan-300 border border-white border-opacity-30 rounded-full font-bold ${sizeClass}
-        hover:bg-cyan-700 hover:bg-opacity-20 transition-all
+        typeClass = `${baseClass} border border-white border-opacity-30 text-cyan-300
+        hover:bg-cyan-700 hover:bg-opacity-20
         active:bg-cyan-800 active:bg-opacity-20
-        disable:opacity-50
         `;
 
     } else if (props.type == "text") {
-        btnClass = `flex items-center justify-center gap-2 text-white rounded-full font-bold ${sizeClass}
-        hover:bg-white hover:bg-opacity-5 transition-all
+        typeClass = `${baseClass} rounded-full font-bold ${sizeClass}
+        hover:bg-white hover:bg-opacity-5
         active:bg-white active:bg-opacity-10
-        disable:opacity-50
         `;
     }
 
@@ -65,12 +91,18 @@ export default function Button(props: ButtonProps) {
     function ButtonRoot() {
         return (
             <button
-                disabled={props.disabled ? props.disabled : false}
+                disabled={props.disabled || props.loading ? true : false}
                 style={props.sx}
                 onClick={handleClick}
-                className={`${btnClass} ${props.className}`}
+                className={`${typeClass} ${props.className}`}
+                type={props.htmlType ? props.htmlType : "submit"}
             >
                 {props.children}
+
+                {
+                    props.loading &&
+                    <Spin indicator={<LoadingOutlined />} />
+                }
             </button >);
     };
 

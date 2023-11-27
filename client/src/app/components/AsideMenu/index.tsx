@@ -4,10 +4,17 @@ import { useEffect, useState } from "react";
 import Button from "../Button";
 import Modal from "../Modal";
 import NewPost from "../PostCreator";
+import { useSession } from "next-auth/react";
+import { Popover } from "antd";
+import { signOut } from 'next-auth/react';
+import { useRouter } from "next/navigation";
 
 export default function AsideMenu() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isPostButtonDisabled, setIsPostButtonDisabled] = useState(true);
+
+    const router = useRouter();
+    const user = useSession().data;
 
     const onTextAreaType = () => {
         const textarea = document.querySelector("textarea");
@@ -22,6 +29,21 @@ export default function AsideMenu() {
             textarea!.style.height = "auto";
             textarea!.style.height = (textarea!.scrollHeight) + "px";
         }
+    };
+
+    const profileMenu = () => {
+        return (
+            <div className="flex flex-col gap-3 w-72 p-0 bg-gray-950 text-white rounded-lg overflow-hidden" style={{ boxShadow: "0 0 15px #ffffff20" }}>
+                <Button
+                    onClick={async () => signOut()}
+                    align="start"
+                    className="rounded-none"
+                    type="text"
+                >
+                    Sair de @{user?.login}
+                </Button>
+            </div>
+        );
     };
 
     return (
@@ -51,16 +73,18 @@ export default function AsideMenu() {
 
                     </div>
 
-                    <li className="flex w-full items-center gap-3 mb-4">
-                        <img src="https://placehold.co/300x300" className="w-10 rounded-full" alt="" />
+                    <Popover overlayInnerStyle={{ padding: 0, background: "none" }} content={profileMenu} trigger={"click"}>
+                        <li className="flex w-full items-center gap-3 mb-4 p-3 rounded-full transition cursor-pointer hover:bg-white hover:bg-opacity-5">
+                            <img src="https://placehold.co/300x300" className="w-10 rounded-full" alt="" />
 
-                        <div className="flex flex-col flex-1">
-                            <span className="text-base font-medium">User Name</span>
-                            <span className="text-sm opacity-50">@userlogin</span>
-                        </div>
+                            <div className="flex flex-col flex-1">
+                                <span className="text-base font-medium">{user?.name}</span>
+                                <span className="text-sm opacity-50">@{user?.login}</span>
+                            </div>
 
-                        <img src="icons/t-points.svg" className="w-4" alt="" />
-                    </li>
+                            <img src="icons/t-points.svg" className="w-6" alt="" />
+                        </li>
+                    </Popover>
                 </menu >
             </aside >
         </>

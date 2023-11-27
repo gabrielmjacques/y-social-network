@@ -1,16 +1,23 @@
 import type { Metadata } from 'next';
-import '../globals.css';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '../api/auth/[...nextauth]/route';
 import AsideMenu from '../components/AsideMenu';
+import '../globals.css';
+import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
   title: 'Y - Profile',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerSession(authOptions);
+
+  if (!session) redirect('/join');
+
   return (
     <div className='bg-gray-950 text-white min-h-screen'>
 
