@@ -1,19 +1,23 @@
 'use client';
 
-import { DownOutlined } from "@ant-design/icons";
+import { Avatar as AntAvatar } from "antd";
+import { DownOutlined, UserOutlined } from "@ant-design/icons";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Button from "../Button";
+import { fromLocalStorage } from "@/utils/localStorageUtil";
+import { bufferToImageUrl } from "@/utils/bufferUtil";
 
 export default function MobileMenu() {
+    const [avatar, setAvatar] = useState<any>();
     const [leftPropMenu, setLeftPropMenu] = useState(-100);
 
     const [dropdowns, setDropdowns] = useState({
         configurations: false
     });
 
-    const user = useSession().data;
+    const user = fromLocalStorage.get.user();
 
     const menuHide = () => {
         setLeftPropMenu(-100);
@@ -24,6 +28,9 @@ export default function MobileMenu() {
     };
 
     useEffect(() => {
+        if (user.avatar)
+            setAvatar(bufferToImageUrl(user.avatar.data));
+
         document.addEventListener('click', (e: MouseEvent) => {
             if (e.target instanceof HTMLElement) {
                 if (e.target.classList.contains('backdrop-blur-sm')) {
@@ -37,7 +44,11 @@ export default function MobileMenu() {
         <div className="md:hidden">
             <div className='flex justify-between px-4'>
                 <Button onClick={menuShow} className="border border-white border-opacity-20" type="text" sx={{ padding: 10 }}>
-                    <img className='w-8 rounded-full' src="y-logo.svg" alt="" />
+                    {
+                        avatar
+                            ? <img className='w-8 rounded-full' src={avatar} alt="" />
+                            : <AntAvatar className="opacity-50" icon={<UserOutlined />} />
+                    }
                 </Button>
 
                 <Button href='/' type="text" sx={{ padding: 10 }}>
@@ -56,12 +67,16 @@ export default function MobileMenu() {
 
                 <menu className="absolute ${} flex flex-col gap-3 pe-5 w-72 h-full bg-gray-950 border border-e border-white border-opacity-20">
                     <li className="p-3 flex flex-col items-start">
-                        <Button href="profile" type="text" sx={{ padding: 5 }}>
-                            <img src="y-logo.svg" className="w-10 rounded-full" alt="" />
+                        <Button href={`profile/${user.login}`} type="text" sx={{ padding: 5 }}>
+                            {
+                                avatar
+                                    ? <img src={avatar} className="w-10 rounded-full" alt="" />
+                                    : <AntAvatar className="opacity-50" icon={<UserOutlined />} />
+                            }
                         </Button>
 
-                        <span className="font-bold hover:underline"><Link href={"profile"}>{user?.name}</Link></span>
-                        <span className="text-sm opacity-50"><Link href={"profile"}>@{user?.login}</Link></span>
+                        <span className="font-bold hover:underline"><Link href={`profile/${user.login}`}>{user.name}</Link></span>
+                        <span className="text-sm opacity-50"><Link href={`profile/${user.login}`}>@{user.login}</Link></span>
 
                         <div className="flex gap-3 mt-3">
                             <span>0 <span className="text-sm opacity-50">Following</span></span>
@@ -98,8 +113,16 @@ export default function MobileMenu() {
                             dropdowns.configurations &&
                             <menu className="flex flex-col gap-3 mt-3">
                                 <li>
-                                    <Button onClick={async () => signOut()} size="sm" align="start" className="w-full ps-3" type="text" sx={{ borderRadius: 0 }}>
-                                        Sair de @{user?.login}
+                                    <Button onClick={async () => {
+                                        signOut();
+                                        localStorage.clear();
+                                    }}
+                                        size="sm"
+                                        align="start"
+                                        className="w-full ps-3"
+                                        type="text"
+                                        sx={{ borderRadius: 0 }}>
+                                        Sair de @{user.login}
                                     </Button>
                                 </li>
                             </menu>

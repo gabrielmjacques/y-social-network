@@ -2,7 +2,7 @@
 
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { CSSProperties } from "react";
 
 interface ButtonProps {
@@ -20,6 +20,8 @@ interface ButtonProps {
 }
 
 export default function Button(props: ButtonProps) {
+    const router = useRouter();
+
     let sizeClass: String = '';
     let alignClass: String = '';
 
@@ -86,6 +88,9 @@ export default function Button(props: ButtonProps) {
     const handleClick = () => {
         if (props.onClick)
             props.onClick();
+
+        if (props.href)
+            router.push(props.href);
     };
 
     function ButtonRoot() {
@@ -106,13 +111,6 @@ export default function Button(props: ButtonProps) {
             </button >);
     };
 
-    if (props.href) {
-        return (
-            <Link href={props.href}>
-                <ButtonRoot />
-            </Link>
-        );
-    }
     // Primary button
     return (
         <ButtonRoot />

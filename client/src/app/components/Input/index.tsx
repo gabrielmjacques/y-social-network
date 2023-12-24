@@ -1,8 +1,6 @@
-import { Input as AntInput, Form } from "antd";
+import { Input as AntInput, ConfigProvider, Form, theme } from "antd";
 import { Rule } from "antd/es/form";
 import { useEffect, useState } from "react";
-import Button from "../Button";
-import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 
 interface InputProps {
     placeholder: string;
@@ -10,12 +8,11 @@ interface InputProps {
     type?: string;
     size?: "sm" | "md" | "lg";
     rules?: Rule[];
-
+    className?: string;
 }
 
 export default function Input(props: InputProps) {
     const [inputType, setInputType] = useState<string>("text");
-    const [eyeVisible, setEyeVisible] = useState(false);
 
     let sizeClass: String = '';
 
@@ -37,32 +34,40 @@ export default function Input(props: InputProps) {
 
     useEffect(() => {
         if (props.type) setInputType(props.type);
-        if (props.type == "password") setEyeVisible(true);
     }, []);
 
-    const togglePasswordVisible = () => {
-        if (inputType == "text") setInputType("password");
-        else setInputType("text");
-    };
-
     return (
-        <Form.Item
-            name={props.name}
-            rules={props.rules}
-            className="relative m-0 "
+        <ConfigProvider
+            theme={{ algorithm: theme.darkAlgorithm }}
         >
-            <AntInput
-                type={inputType}
-                placeholder={props.placeholder}
-                className={
-                    `w-full rounded-full bg-white text-white placeholder-white placeholder-opacity-40 bg-opacity-5 border border-white border-opacity-10 
+            <Form.Item
+                name={props.name}
+                rules={props.rules}
+                className={`relative m-0 ${props.className} cursor-text`}
+            >
+                {
+                    inputType === "password"
+                        ? <AntInput.Password
+                            placeholder={props.placeholder}
+                            className={
+                                `w-full rounded-full bg-white text-white placeholder-white placeholder-opacity-40 bg-opacity-5 border border-white ${props.className} border-opacity-10 
                     hover:border-white hover:border-opacity-20
                     focus:border-cyan-500 focus:border-opacity-30
                 ${sizeClass}`
+                            }
+                        />
+                        : <AntInput
+                            type={inputType}
+                            placeholder={props.placeholder}
+                            className={
+                                `w-full rounded-full bg-white text-white placeholder-white placeholder-opacity-40 bg-opacity-5 border border-white ${props.className} border-opacity-10 
+                hover:border-white hover:border-opacity-20
+                focus:border-cyan-500 focus:border-opacity-30
+            ${sizeClass}`
+                            }
+                        />
                 }
-            >
-
-            </AntInput>
-        </Form.Item>
+            </Form.Item>
+        </ConfigProvider>
     );
 }

@@ -32,7 +32,7 @@ export default function Join() {
   const onSignupFinish = async (e: SignupForm) => {
     setLoading(true);
 
-    const response = await fetch("http://localhost:3001/api/user/create", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/create`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -42,7 +42,6 @@ export default function Join() {
       })
     });
     const data = await response.json();
-    console.log(data);
 
     if (data.success) {
       setSignupModalShow(false);
@@ -70,8 +69,6 @@ export default function Join() {
       redirect: false
     });
 
-    console.log(result);
-
     if (result?.error) {
       showNotification.error({
         message: "Error!",
@@ -81,6 +78,10 @@ export default function Join() {
       setLoading(false);
       return;
     }
+
+    let user_data: any = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/gl/${e.login}`);
+    user_data = await user_data.json();
+    localStorage.setItem("user", JSON.stringify(user_data.user));
 
     router.replace("/");
   };
@@ -106,8 +107,10 @@ export default function Join() {
               <Input name="r_name" size="md" placeholder="Name"
                 rules={[
                   { required: true, message: "Please enter your name" },
-                  { min: 7, max: 60, message: "Login must be between 7 and 15 characters" },
-                  { pattern: /^(?!.*\s$)(?!^\s)[A-Za-zÀ-ÿ\s]{7,60}$/, message: "Name must contain only letters" }
+                  { max: 30, message: "Login must be maximum 30 characters" },
+                  {
+                    pattern: /^(?!.*\s$)(?!^\s)[A-Za-zÀ-ÿ0-9.\s]{1,60}$/, message: "Name must contain only letters and numbers"
+                  }
                 ]}
               />
 

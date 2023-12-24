@@ -6,6 +6,7 @@ import Button from "../Button";
 interface ModalProps {
     children: React.ReactNode;
     isOpen: boolean;
+    onOpen?: () => void;
     onClose: () => void;
 }
 
@@ -30,6 +31,8 @@ export default function Modal(props: ModalProps) {
                 translateY: translateYOffset.initial
             });
         }, 50);
+
+        if (props.onOpen) props.onOpen();
     }
 
     function handleOnClose() {
@@ -64,14 +67,14 @@ export default function Modal(props: ModalProps) {
 
             <div className="fixed inset-0 z-40" onClick={() => props.onClose()}></div>
 
-            <div className="fixed top-1/2 left-1/2 bg-gray-950 border border-white border-opacity-10 text-white z-50 w-10/12 md:w-5/12 rounded-xl shadow-2xl flex flex-col transition duration-300" style={{ transform: `translate(-50%, ${modalStyles.translateY}%` }}>
+            <div className="fixed overflow-y-scroll top-1/2 left-1/2 bg-gray-950 border border-white border-opacity-10 text-white z-50 w-screen md:w-5/12 rounded-xl shadow-2xl flex flex-col transition duration-300" style={{ transform: `translate(-50%, ${modalStyles.translateY}%`, maxHeight: "95dvh" }}>
                 <div className="p-2 flex justify-between">
                     <Button type="text" size="sm" sx={{ padding: 10 }} onClick={() => props.onClose()}>
-                        <img src="icons/close.svg" className="w-4 opacity-50" alt="" />
+                        <img src="/icons/close.svg" className="w-4 opacity-50" alt="" />
                     </Button>
                 </div>
 
-                <div className="p-5 h-full">
+                <div className="p-3 h-full">
                     {props.children}
                 </div>
             </div>

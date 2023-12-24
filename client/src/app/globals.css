@@ -16,7 +16,21 @@
   }
 }
 
+::-webkit-scrollbar {
+  width: 0.3rem;
+}
+
+::-webkit-scrollbar-thumb {
+  /* cyan color */
+  background-color: #0a2d44;
+  border-radius: 0.25rem;
+}
+
 input {
   border: none;
   outline: none;
+}
+
+div.ant-upload {
+  width: 100%;
 }
