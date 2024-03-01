@@ -5,16 +5,29 @@ import { useEffect, useRef, useState } from "react";
 import Button from "../components/Button";
 import MobileMenu from "../components/MobileMenu";
 import { bufferToImageUrl } from "@/utils/bufferUtil";
-import { Avatar as AntAvatar } from "antd";
+import { Avatar as AntAvatar, ConfigProvider, message, theme } from "antd";
 import { UserOutlined } from "@ant-design/icons";
+import { postService } from "@/services/postService";
+import { useSession } from "next-auth/react";
+import { IPost } from "@/interfaces/IPost";
+import Post from "../components/Post";
+import User from "@/interfaces/IUser";
 
 export default function Home() {
+    // States
     const [avatar, setAvatar] = useState<any>();
-    const [isPostButtonDisabled, setIsPostButtonDisabled] = useState(true);
     const textArea = useRef<HTMLTextAreaElement>(null);
+    const [isPostButtonDisabled, setIsPostButtonDisabled] = useState(true);
+    const [posts, setPosts] = useState<any>([]);
+    const [user, setUser] = useState<User>({});
 
-    const user = fromLocalStorage.get.user();
+    // Hooks
+    const session = useSession();
+    const [showMessage, contextHolder] = message.useMessage();
 
+    /**
+     * @description Automatically resizes the textarea when the user types.
+     */
     const onTextAreaType = () => {
         if (textArea!.current!.value.trim().length > 0) {
             setIsPostButtonDisabled(false);
@@ -28,13 +41,46 @@ export default function Home() {
         }
     };
 
+    /**
+     * @description Creates a new post.
+     */
+    // const newPost = () => {
+    //     const post: IPost = {
+    //         user_id: session.data!.id,
+    //         text: textArea.current!.value
+    //     };
+
+    //     postService.newPost(post)
+    //         .then((res) => {
+    //             if (res.success) {
+    //                 showMessage.success("Post created successfully!");
+    //                 textArea.current!.value = "";
+
+    //             } else {
+    //                 showMessage.error("An error occurred while creating the post.");
+    //             }
+    //         });
+    // };
+
     useEffect(() => {
-        if (user.avatar)
-            setAvatar(bufferToImageUrl(user.avatar!.data));
-    }, []);
+        if (!session.data) return;
+        setUser(fromLocalStorage.get.user());
+
+        if (user) {
+            if (user.avatar)
+                setAvatar(bufferToImageUrl(user.avatar!.data));
+
+        }
+    }, [session.data]);
 
     return (
         <main>
+            <ConfigProvider theme={{
+                algorithm: theme.darkAlgorithm
+            }}>
+                {contextHolder}
+            </ConfigProvider>
+
             <header>
                 <MobileMenu />
 
@@ -86,7 +132,9 @@ export default function Home() {
 
             {/* Posts */}
             <section>
-
+                {
+                    posts
+                }
             </section>
 
         </main>

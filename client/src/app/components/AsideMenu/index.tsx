@@ -1,21 +1,29 @@
 'use client';
 
+import { IPost } from "@/interfaces/IPost";
+import { postService } from "@/services/postService";
 import { bufferToImageUrl } from "@/utils/bufferUtil";
 import { fromLocalStorage } from "@/utils/localStorageUtil";
-import { Popover, Avatar as AntAvatar } from "antd";
-import { signOut } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { UserOutlined } from "@ant-design/icons";
+import { Avatar as AntAvatar, ConfigProvider, Popover, message, notification, theme } from "antd";
+import { signOut, useSession } from "next-auth/react";
+import { useEffect, useRef, useState } from "react";
 import Button from "../Button";
 import Modal from "../Modal";
-import NewPost from "../PostCreator";
-import { UserOutlined } from "@ant-design/icons";
 
 export default function AsideMenu() {
+    // States
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [profileImage, setProfileImage] = useState<string | undefined>(undefined);
+    const [isPostButtonDisabled, setIsPostButtonDisabled] = useState(true);
+    const textArea = useRef<HTMLTextAreaElement>(null);
 
+    // Hooks
     const user = fromLocalStorage.get.user();
+    const session = useSession();
+    const [showMessage, contextHolder] = message.useMessage();
 
+    // Popover
     const profileMenu = () => {
         return (
             <div className="flex flex-col gap-3 w-72 p-0 bg-gray-950 text-white rounded-lg overflow-hidden" style={{ boxShadow: "0 0 15px #ffffff20" }}>
@@ -34,6 +42,45 @@ export default function AsideMenu() {
         );
     };
 
+    /**
+     * @description Automatically resizes the textarea when the user types.
+     */
+    const onTextAreaType = () => {
+        if (textArea!.current!.value.trim().length > 0) {
+            setIsPostButtonDisabled(false);
+        } else {
+            setIsPostButtonDisabled(true);
+        }
+
+        if (textArea.current!) {
+            textArea!.current!.style.height = "auto";
+            textArea!.current!.style.height = (textArea!.current!.scrollHeight) + "px";
+        }
+    };
+
+    /**
+     * @description Creates a new post.
+     */
+    const newPost = () => {
+        const post: IPost = {
+            user_id: session.data!.id,
+            text: textArea.current!.value
+        };
+
+        postService.newPost(post)
+            .then((res) => {
+                if (res.success) {
+                    showMessage.success("Post created successfully!");
+                    textArea.current!.value = "";
+
+                } else {
+                    showMessage.error("An error occurred while creating the post.");
+                }
+
+                setIsModalOpen(false);
+            });
+    };
+
     useEffect(() => {
         if (user.avatar)
             setProfileImage(bufferToImageUrl(user.avatar.data));
@@ -41,13 +88,38 @@ export default function AsideMenu() {
 
     return (
         <>
+            <ConfigProvider theme={{
+                algorithm: theme.darkAlgorithm
+            }}>
+                {contextHolder}
+            </ConfigProvider>
+
+            {/* New post modal */}
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
                 <div>
-                    <NewPost />
+                    <div className="flex flex-col gap-5">
+                        <div className="flex  p-4">
+                            {
+                                user.avatar
+                                    ? <img src={bufferToImageUrl(user.avatar)} className="w-12 rounded-full self-start" alt="" />
+                                    : <AntAvatar className="opacity-50" icon={<UserOutlined />} />
+                            }
+
+                            <div className="flex-1 mx-4">
+                                <textarea ref={textArea} onInput={onTextAreaType} className="bg-transparent text-xl w-full outline-none max-h-60 resize-none" rows={3} placeholder="What are you thinking about?" name="post_text" id="post_text_entry"></textarea>
+
+                                <div className="flex justify-end border-t border-white border-opacity-20 mt-3 pt-3">
+                                    <Button disabled={isPostButtonDisabled} className="px-10" onClick={newPost}>Post</Button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </Modal>
 
-            <aside className="fixed left-10 w-1/5 h-full flex justify-end ps-5 py-1">
+            {/* Aside menu */}
+            <aside className="fixed w-1/5 h-full flex justify-end ps-5 py-1">
                 <menu id="menu-links" className="text-xl flex flex-col w-full justify-between items-end">
                     <div className="flex w-full flex-col gap-2">
 
@@ -56,10 +128,10 @@ export default function AsideMenu() {
                         </li>
 
                         <li className="flex gap-3">
-                            <Button href="/" type="text"><img src="/icons/home.svg" className="w-6" alt="" /> <span className="text-lg">Home</span></Button>
+                            <Button href="/" className="w-full" align="start" type="text"><img src="/icons/home.svg" className="w-6" alt="" /> <span className="text-lg">Home</span></Button>
                         </li>
                         <li className="flex gap-3">
-                            <Button href={`/profile/${user?.login}`} type="text"><img src="/icons/profile.svg" className="w-6" alt="" /> <span className="text-lg">Profile</span></Button>
+                            <Button href={`/profile/${user?.login}`} className="w-full" align="start" type="text"><img src="/icons/profile.svg" className="w-6" alt="" /> <span className="text-lg">Profile</span></Button>
                         </li>
 
                         <li className="w-full">

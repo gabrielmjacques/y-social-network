@@ -2,7 +2,9 @@
 
 import Button from "@/app/components/Button";
 import Modal from "@/app/components/Modal";
+import { IPost } from "@/interfaces/IPost";
 import IUser from "@/interfaces/IUser";
+import { postService } from "@/services/postService";
 import { bufferToImageUrl } from "@/utils/bufferUtil";
 import { fromLocalStorage } from "@/utils/localStorageUtil";
 import { LoadingOutlined, UserOutlined } from "@ant-design/icons";
@@ -26,6 +28,7 @@ export default function Profile({ params }: { params: { slug: string; }; }) {
   const [profileLoading, setProfileLoading] = useState<boolean>(true);
   const [editProfileModal, setEditProfileModal] = useState<boolean>(false);
   const [editProfileLoading, setEditProfileLoading] = useState<boolean>(false);
+  const [posts, setPosts] = useState<IPost[]>();
 
   const [showNotification, contextHolder] = notification.useNotification();
 
@@ -81,7 +84,7 @@ export default function Profile({ params }: { params: { slug: string; }; }) {
       local: e.local
     };
 
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/edit/${user!.id}`, {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/edit/${session.data?.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json"
@@ -93,8 +96,8 @@ export default function Profile({ params }: { params: { slug: string; }; }) {
       .then(data => {
         if (data.success) {
           showNotification.success({
-            message: "Success!",
-            description: data.message
+            message: "Profile Updated!",
+            description: "Some changes may take a moment to take effect"
           });
 
           fetchUser();
@@ -185,6 +188,8 @@ export default function Profile({ params }: { params: { slug: string; }; }) {
 
   useEffect(() => {
     fetchUser();
+
+    const posts = postService.getPostsById();
   }, []);
 
   return (
@@ -276,7 +281,7 @@ export default function Profile({ params }: { params: { slug: string; }; }) {
                       <DatePicker
                         size="large"
                         disabledDate={disableDate}
-                        format={"YYYY/MM/DD"}
+                        format={"MM/DD/YYYY"}
                         placeholder="Date of birth"
                         className="w-full bg-transparent" />
                     </Form.Item>
@@ -427,6 +432,8 @@ export default function Profile({ params }: { params: { slug: string; }; }) {
 
             {/* Posts */}
             <section>
+
+
 
             </section>
           </>

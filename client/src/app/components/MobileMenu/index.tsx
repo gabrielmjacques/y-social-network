@@ -18,6 +18,7 @@ export default function MobileMenu() {
     });
 
     const user = fromLocalStorage.get.user();
+    const session = useSession();
 
     const menuHide = () => {
         setLeftPropMenu(-100);
@@ -91,7 +92,7 @@ export default function MobileMenu() {
                     </li>
 
                     <li>
-                        <Button align="start" className="w-full ps-3" href="profile" type="text" sx={{ borderRadius: 0 }}>
+                        <Button align="start" className="w-full ps-3" href={`profile/${session.data?.login}`} type="text" sx={{ borderRadius: 0 }}>
                             <img src="icons/profile.svg" className="w-6" alt="" /> <span className="text-lg">Profile</span>
                         </Button>
                     </li>

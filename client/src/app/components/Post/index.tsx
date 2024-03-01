@@ -1,4 +1,6 @@
+import dayjs from "dayjs";
 import Button from "../Button";
+import { useRouter } from "next/navigation";
 
 interface PostProps {
     img: string;
@@ -9,19 +11,25 @@ interface PostProps {
 }
 
 export default function Post(props: PostProps) {
+    const router = useRouter();
+
+    const goToProfile = () => {
+        router.push(`/profile/${props.login}`);
+    };
+
     return (
         <div className="flex gap-3 px-4 py-3 border-b border-white border-opacity-30 cursor-pointer hover:backdrop-brightness-125">
-            <img className="w-12 self-start rounded-full" src={props.img} alt="" />
+            <img className="w-12 self-start rounded-full transition-all hover:brightness-75" src={props.img} alt={`Avatar of ${props.username}`} onClick={goToProfile} />
 
             <div className="w-full flex flex-col text-sm">
                 <div className="flex justify-between">
                     <div className="flex flex-wrap items-center">
-                        <span className="font-bold me-2">{props.username}</span>
+                        <span className="font-bold me-2 hover:underline" onClick={goToProfile}>{props.username}</span>
 
                         <div className="flex gap-2 opacity-50">
                             <span>@{props.login}</span>
                             <span>·</span>
-                            <span>{props.date.toLocaleDateString()}</span>
+                            <span>{dayjs(props.date).format("MM/DD/YYYY")}</span>
                         </div>
                     </div>
 

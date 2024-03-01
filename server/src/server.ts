@@ -1,5 +1,6 @@
 import express from 'express';
 import userRoutes from './routes/userRoutes';
+import postRoutes from './routes/postRoutes';
 import dotenv from 'dotenv';
 import cors from "cors";
 
@@ -11,6 +12,7 @@ server.use(express.json());
 server.use(cors());
 
 server.use("/api/user", userRoutes);
+server.use("/api/post", postRoutes);
 
 server.get('/', (req, res) => {
     res.send('Hello world');
