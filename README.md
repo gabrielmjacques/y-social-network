@@ -5,8 +5,9 @@ Projeto em Typescript que utiliza  NextJS, ReactJS, Typescript, Tailwind, MySQL 
 <div style=display: flex>
   <img width=100% src="https://github.com/gabrielmjacques/y-social-network/assets/107326349/77802904-a9c9-49a7-bb0b-045460d67443"/>
   <hr>
-  <img width=49% src="https://github.com/gabrielmjacques/y-social-network/assets/107326349/138f9660-35ff-43bc-898d-d6f47e950431"/>
-  <img width=49.9% src="https://github.com/gabrielmjacques/y-social-network/assets/107326349/3a5377a3-34ad-4666-b9ca-e96b77bb2afe"/>
+  
+  <img width=49.9% src="https://github.com/gabrielmjacques/y-social-network/assets/107326349/4fbee469-2f13-46b7-bd6c-4fe74bbf52cd"/>
+  <img width=49% src="https://github.com/gabrielmjacques/y-social-network/assets/107326349/140d9a44-0f99-4b92-abbb-13a182e22783"/>
 </div>
 
 ## Tecnologias Usadas
@@ -24,24 +25,46 @@ Projeto em Typescript que utiliza  NextJS, ReactJS, Typescript, Tailwind, MySQL 
 git clone https://github.com/gabrielmjacques/y-social-network.git
 ```
 
+---
+
 2. Configure o banco de dados MySQL:
 
-- Crie um banco de dados no MySQL para o projeto (Modelo de Entidade e Relacionamento na pasta raiz do projeto como `db_model.mwb`).
+- Crie o banco de dados do projeto utilizando o [MySQL Workbench](https://www.mysql.com/products/workbench/) (Modelo de Entidade e Relacionamento na pasta raiz do projeto como `db_model.mwb`).
+
+---
 
 3. Configure o server:
 
 - Altere os valores das variáveis de ambiente no arquivo `server/.env.exemple`
 - Renomeie o arquivo para `.env`
 
+---
+
 4. Configure o client:
 
-- Altere os valores das variáveis de ambiente do arquivo `client/.env_exemple` com base na URL do servidor (`http://localhost:(PORTA CONFIGURADA EM server/.env.exemple)`)
+- Altere os valores das variáveis de ambiente do arquivo `client/.env_exemple` com base na URL do servidor (`http://localhost:(PORTA CONFIGURADA NO .env DO SERVER)/api`)
 - Renomeie o arquivo para `.env`
 
-5. Execute o aplicativo:
+---
 
-- Abra dois terminais, um na pasta `client` e outro na pasta `server`
-- Em cada um dos terminais execute o seguinte comando:
+5. Instale as dependências:
+
+- Abra dois terminais.
+  - Primeiro terminal na pasta ``client`` do projeto.
+  - Segundo terminal na pasta ``server`` do projeto.
+  
+* Em ambos os terminais, execute o comando:
 ```
-npm run dev
+npm install
 ```
+
+---
+
+6. Execute o projeto:
+
+- Em cada um dos terminais, execute o comando:
+```
+npm run dev  
+```
+
+---
