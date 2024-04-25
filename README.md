@@ -13,7 +13,8 @@ Projeto em Typescript que utiliza  NextJS, ReactJS, Typescript, Tailwind, NodeJS
 ## Tecnologias Usadas
 
 - [NextJS](https://nextjs.org/)
-- [React](https://react.dev/) - [Typescript](https://www.typescriptlang.org/)
+- [React](https://react.dev/) 
+- [Typescript](https://www.typescriptlang.org/)
 - [Tailwind](https://tailwindcss.com/)
 - [NodeJS](https://nodejs.org/en)
 - [Express](https://expressjs.com/)
