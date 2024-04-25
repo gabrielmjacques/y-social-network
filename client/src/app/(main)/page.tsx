@@ -15,7 +15,6 @@ import User from "@/interfaces/IUser";
 
 export default function Home() {
     // States
-    const [avatar, setAvatar] = useState<any>();
     const textArea = useRef<HTMLTextAreaElement>(null);
     const [isPostButtonDisabled, setIsPostButtonDisabled] = useState(true);
     const [posts, setPosts] = useState<any>([]);
@@ -65,12 +64,6 @@ export default function Home() {
     useEffect(() => {
         if (!session.data) return;
         setUser(fromLocalStorage.get.user());
-
-        if (user) {
-            if (user.avatar)
-                setAvatar(bufferToImageUrl(user.avatar!.data));
-
-        }
     }, [session.data]);
 
     return (
@@ -113,8 +106,8 @@ export default function Home() {
                 <div className="flex flex-col gap-5">
                     <div className="flex  p-4">
                         {
-                            avatar
-                                ? <img src={avatar} className="w-12 rounded-full self-start" alt="" />
+                            user.avatar
+                                ? <img src={bufferToImageUrl(user.avatar)} className="w-12 rounded-full self-start" alt="" />
                                 : <AntAvatar className="opacity-50" icon={<UserOutlined />} />
                         }
 

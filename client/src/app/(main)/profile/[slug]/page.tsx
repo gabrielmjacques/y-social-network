@@ -189,7 +189,7 @@ export default function Profile({ params }: { params: { slug: string; }; }) {
   useEffect(() => {
     fetchUser();
 
-    const posts = postService.getPostsById();
+    const posts = postService.getPostsByLogin(params.slug);
   }, []);
 
   return (
