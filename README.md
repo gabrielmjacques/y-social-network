@@ -1,6 +1,6 @@
 # Y Social Network (Em desenvolvimento)
 
-Projeto em Typescript que utiliza  NextJS, ReactJS, Typescript, Tailwind, MySQL para criar um rede social moderna e fácil de usar.
+Projeto em Typescript que utiliza  NextJS, ReactJS, Typescript, Tailwind, NodeJS, Express e MySQL para criar um rede social moderna e fácil de usar.
 
 <div style=display: flex>
   <img width=100% src="https://github.com/gabrielmjacques/y-social-network/assets/107326349/77802904-a9c9-49a7-bb0b-045460d67443"/>
@@ -13,9 +13,14 @@ Projeto em Typescript que utiliza  NextJS, ReactJS, Typescript, Tailwind, MySQL 
 ## Tecnologias Usadas
 
 - [NextJS](https://nextjs.org/)
-- [React](https://react.dev/)
-- [Typescript](https://www.typescriptlang.org/)
+- [React](https://react.dev/) - [Typescript](https://www.typescriptlang.org/)
 - [Tailwind](https://tailwindcss.com/)
+- [NodeJS](https://nodejs.org/en)
+- [Express](https://expressjs.com/)
+- [MySQL](https://www.mysql.com/)
+
+## Requisitos para execução
+- [NodeJS](https://nodejs.org/en)
 - [MySQL](https://www.mysql.com/)
 
 ## Configuração
